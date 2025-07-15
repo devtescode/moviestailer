@@ -17,8 +17,6 @@ const Userdb = () => {
 
             const res = await axios.get(endpoint);
             setMovies(res.data.results);
-            console.log(res, "get response");
-
         } catch (err) {
             console.error("Error fetching movies:", err);
         }
@@ -61,45 +59,65 @@ const Userdb = () => {
     }, [page]);
 
     return (
-        <div className="container py-4">
+        <div className="container-fluid bg-dark text-white min-vh-100 py-4">
             {/* Search Bar */}
-            <div className="mb-4">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search movies..."
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyPress={handleSearch}
-                />
-                
+            <div className="d-flex justify-content-center mb-4">
+                <div className="input-group" style={{ maxWidth: "500px" }}>
+                    <input
+                        type="text"
+                        className="form-control  border-secondary"
+                        placeholder="Search movies..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onKeyPress={handleSearch}
+                    />
+                    <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={fetchMovies}
+                    >
+                        <i className="fas fa-search me-1"></i>Search
+                    </button>
+                </div>
             </div>
 
             {/* Movie Grid */}
-            <div className="row row-cols-2 row-cols-md-4 g-2">
+            <div className="row row-cols-2 row-cols-md-4 g-4 px-3">
                 {movies.map((movie) => (
                     <div key={movie.id} className="col">
-                        <div className="card bg-dark text-white h-100">
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                className="card-img-top"
-                                alt={movie.title}
-                            />
+                        <div className="card bg-black text-white h-100 shadow-sm border border-secondary">
+                            <div className="position-relative overflow-hidden">
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                    className="card-img-top object-fit-cover"
+                                    style={{ height: "300px", objectFit: "cover" }}
+                                    alt={movie.title}
+                                />
+                                <div className="overlay d-flex justify-content-center align-items-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition">
+                                    <button
+                                        className="btn btn-light rounded-circle"
+                                        onClick={() => openTrailerModal(movie)}
+                                    >
+                                        <i className="fas fa-play text-dark"></i>
+                                    </button>
+                                </div>
+                            </div>
                             <div className="card-body d-flex flex-column">
-                                <h5 className="card-title">{movie.title}</h5>
-                               
-                                <button
-                                    className="btn btn-primary mt-auto"
-                                    onClick={() => openTrailerModal(movie)}
-                                >
-                                    Watch Trailer
-                                </button>
-                                <Link
-                                    to={`/movie/${movie.id}`}
-                                    className="btn btn-outline-light mt-2"
-                                >
-                                    Show Details
-                                </Link>
+                                <h5 className="card-title text-truncate">{movie.title}</h5>
+                                <div className="mt-auto">
+                                    <button
+                                        className="btn btn-outline-light btn-sm w-100 mb-2"
+                                        onClick={() => openTrailerModal(movie)}
+                                    >
+                                        <i className="fas fa-film me-1"></i> Watch Trailer
+                                    </button>
+                                    <Link
+                                        to={`/movie/${movie.id}`}
+                                        className="btn btn-outline-secondary btn-sm w-100"
+                                    >
+                                        <i className="fas fa-info-circle me-1"></i> Show Details
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,20 +125,20 @@ const Userdb = () => {
             </div>
 
             {/* Pagination */}
-            <div className="d-flex justify-content-between align-items-center mt-4">
+            <div className="d-flex justify-content-between align-items-center mt-5 px-3">
                 <button
-                    className="btn btn-secondary"
+                    className="btn btn-outline-light"
                     onClick={() => setPage((p) => Math.max(p - 1, 1))}
                     disabled={page === 1}
                 >
-                    Previous
+                    <i className="fas fa-chevron-left me-1"></i> Previous
                 </button>
-                <span>Page {page}</span>
+                <span className="fs-5">Page {page}</span>
                 <button
-                    className="btn btn-secondary"
+                    className="btn btn-outline-light"
                     onClick={() => setPage((p) => p + 1)}
                 >
-                    Next
+                    Next <i className="fas fa-chevron-right ms-1"></i>
                 </button>
             </div>
 
@@ -136,12 +154,12 @@ const Userdb = () => {
                         className="modal-dialog modal-lg modal-dialog-centered"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="modal-content bg-dark text-white">
-                            <div className="modal-header">
+                        <div className="modal-content bg-dark text-white border-secondary">
+                            <div className="modal-header border-0">
                                 <h5 className="modal-title">{selectedMovie.title} Trailer</h5>
                                 <button
                                     type="button"
-                                    className="btn-close"
+                                    className="btn-close btn-close-white"
                                     onClick={closeModal}
                                 ></button>
                             </div>
@@ -163,3 +181,8 @@ const Userdb = () => {
 };
 
 export default Userdb;
+
+
+
+
+

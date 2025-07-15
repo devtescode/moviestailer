@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Userdb from './components/UserDb/Userdb'
 import Moviedetails from './components/Moviedetails/Moviedetails'
+import Test from './components/UserDb/test'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path='/' element={<Userdb/>}/>
       {/* <Route path="/movie/:id" element={<MovieDetail />} /> */}
       <Route path="/movie/:id" element={<Moviedetails/>}/>
+      <Route path='/test' element={<Test/>}/>
     </Routes>
     </>
   )
