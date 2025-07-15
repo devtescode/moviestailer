@@ -24,7 +24,7 @@ const MovieDetail = () => {
         
         fetchMovieDetail();
     }, [id]);
-    console.log(import.meta.env.VITE_TMDB_API_KEY, "APikey"); // Should NOT be undefined
+    // console.log(import.meta.env.VITE_TMDB_API_KEY, "APikey"); // Should NOT be undefined
 
     if (!movie) return <div className="text-center p-5">Loading...</div>;
 
@@ -46,7 +46,7 @@ const MovieDetail = () => {
                 </div>
 
                 {/* Details - full width on small, 9 columns on md+ */}
-                <div className="col-12 col-md-9 bg-dark text-white rounded p-4">
+                <div className="col-12 col-md-9 bg-dark text-white rounded p-4 mt-2 mt-sm-0">
                     <h2 className="fw-bold text-center text-md-start">{movie.title}</h2>
                     <p><strong>Release Date:</strong> {movie.release_date}</p>
                     <p><strong>Rating:</strong> {movie.vote_average} / 10</p>
