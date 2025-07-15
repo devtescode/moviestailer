@@ -8,8 +8,10 @@ const Userdb = () => {
     const [page, setPage] = useState(1);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [trailerUrl, setTrailerUrl] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const fetchMovies = async () => {
+        setLoading(true); // start loading
         try {
             const endpoint = query
                 ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
@@ -19,8 +21,11 @@ const Userdb = () => {
             setMovies(res.data.results);
         } catch (err) {
             console.error("Error fetching movies:", err);
+        } finally {
+            setLoading(false); // stop loading
         }
     };
+
 
     const handleSearch = (e) => {
         if (e.key === "Enter") {
@@ -81,51 +86,63 @@ const Userdb = () => {
                 </div>
             </div>
 
-            
+
 
             {/* Movie Grid */}
-            <div className="row row-cols-2 row-cols-md-4 g-2">
-                {movies.map((movie) => (
-                    <div key={movie.id} className="col">
-                        <div className="card bg-black text-white h-100 shadow-sm border border-secondary">
-                            <div className="position-relative overflow-hidden">
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                    className="card-img-top object-fit-cover"
-                                    style={{ height: "250px", objectFit: "cover" }}
-                                    alt={movie.title}
-                                />
-                                <div className="overlay d-flex justify-content-center align-items-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition">
-                                    <button
-                                        className="btn btn-light rounded-circle"
-                                        onClick={() => openTrailerModal(movie)}
-                                    >
-                                        <i className="fas fa-play text-dark"></i>
-                                    </button>
+            {loading ? (
+                <div className="d-flex justify-content-center align-items-center bg-dark text-white position-fixed top-0 start-0 w-100 vh-100 z-3">
+                    <div className="text-center">
+                        <div className="spinner-border text-light" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="mt-3">Loading...</p>
+                    </div>
+                </div>
+
+
+            ) : (
+                <div className="row row-cols-2 row-cols-md-4 g-2">
+                    {movies.map((movie) => (
+                        <div key={movie.id} className="col">
+                            <div className="card bg-black text-white h-100 shadow-sm border border-secondary">
+                                <div className="position-relative overflow-hidden">
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                        className="card-img-top object-fit-cover"
+                                        style={{ height: "250px", objectFit: "cover" }}
+                                        alt={movie.title}
+                                    />
+                                    <div className="overlay d-flex justify-content-center align-items-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition">
+                                        <button
+                                            className="btn btn-light rounded-circle"
+                                            onClick={() => openTrailerModal(movie)}
+                                        >
+                                            <i className="fas fa-play text-dark"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="card-body d-flex flex-column">
-                                <h5 className="card-title text-truncate">{movie.title}</h5>
-                                <div className="mt-auto">
-                                    <button
-                                        className="btn btn-outline-light btn-sm w-100 mb-2"
-                                        onClick={() => openTrailerModal(movie)}
-                                    >
-                                        <i className="fas fa-film me-1"></i> Watch Trailer
-                                    </button>
-                                    <Link
-                                        to={`/movie/${movie.id}`}
-                                        className="btn btn-outline-secondary btn-sm w-100"
-                                    >
-                                        <i className="fas fa-info-circle me-1"></i> Show Details
-                                    </Link>
+                                <div className="card-body d-flex flex-column">
+                                    <h5 className="card-title text-truncate">{movie.title}</h5>
+                                    <div className="mt-auto">
+                                        <button
+                                            className="btn btn-outline-light btn-sm w-100 mb-2"
+                                            onClick={() => openTrailerModal(movie)}
+                                        >
+                                            <i className="fas fa-film me-1"></i> Watch Trailer
+                                        </button>
+                                        <Link
+                                            to={`/movie/${movie.id}`}
+                                            className="btn btn-outline-secondary btn-sm w-100"
+                                        >
+                                            <i className="fas fa-info-circle me-1"></i> Show Details
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-
+                    ))}
+                </div>
+            )}
             {/* Pagination */}
             <div className="d-flex justify-content-between align-items-center mt-5 px-3">
                 <button
