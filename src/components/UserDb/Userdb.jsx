@@ -81,8 +81,10 @@ const Userdb = () => {
                 </div>
             </div>
 
+            
+
             {/* Movie Grid */}
-            <div className="row row-cols-2 row-cols-md-4 g-4 px-3">
+            <div className="row row-cols-2 row-cols-md-4 g-2">
                 {movies.map((movie) => (
                     <div key={movie.id} className="col">
                         <div className="card bg-black text-white h-100 shadow-sm border border-secondary">
@@ -90,7 +92,7 @@ const Userdb = () => {
                                 <img
                                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                                     className="card-img-top object-fit-cover"
-                                    style={{ height: "300px", objectFit: "cover" }}
+                                    style={{ height: "250px", objectFit: "cover" }}
                                     alt={movie.title}
                                 />
                                 <div className="overlay d-flex justify-content-center align-items-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition">
