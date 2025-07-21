@@ -23,7 +23,7 @@ const Userdb = () => {
 
             const fetchedMovies = res.data.results;
 
-            
+
             if (fetchedMovies.length === 0) {
                 setNoResults(true);
             }
@@ -165,7 +165,7 @@ const Userdb = () => {
                                     )}
 
 
-                                 
+
 
                                     <div className="overlay d-flex justify-content-center align-items-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition">
                                         <button
@@ -245,7 +245,7 @@ const Userdb = () => {
                                     onClick={closeModal}
                                 ></button>
                             </div>
-                            <div className="modal-body">
+                            {/* <div className="modal-body">
                                 <div className="ratio ratio-16x9">
                                     <iframe
                                         src={trailerUrl}
@@ -253,7 +253,28 @@ const Userdb = () => {
                                         allowFullScreen
                                     ></iframe>
                                 </div>
+                            </div> */}
+                            <div className="modal-body">
+                                {/* For small screens */}
+                                <div className="d-md-none" style={{ height: "300px" }}>
+                                    <iframe
+                                        src={trailerUrl}
+                                        title="Trailer"
+                                        allowFullScreen
+                                        style={{ width: "100%", height: "100%", border: "none" }}
+                                    ></iframe>
+                                </div>
+
+                                {/* For medium and larger screens */}
+                                <div className="d-none d-md-block ratio ratio-16x9">
+                                    <iframe
+                                        src={trailerUrl}
+                                        title="Trailer"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
