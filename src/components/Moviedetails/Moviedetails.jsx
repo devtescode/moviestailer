@@ -66,8 +66,8 @@ const MovieDetail = () => {
                     <p><strong>Runtime:</strong> {movie.runtime} mins</p>
                     <p><strong>Genres:</strong> {movie.genres.map(g => g.name).join(", ")}</p>
                     <hr />
-                    <div className="bg-white text-dark p-1 rounded-2">
-                        <strong>Overview</strong>
+                    <div className="">
+                        <strong className="fs-5">Overview</strong>
                         <p>{movie.overview}</p>
                     </div>
                 </div>
