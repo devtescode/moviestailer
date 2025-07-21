@@ -9,22 +9,36 @@ const Userdb = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [trailerUrl, setTrailerUrl] = useState("");
     const [loading, setLoading] = useState(false);
+    const [noResults, setNoResults] = useState("");
 
     const fetchMovies = async () => {
-        setLoading(true); // start loading
+        setLoading(true);
+        setNoResults(false); // reset before new fetch
         try {
             const endpoint = query
                 ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
                 : `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
 
             const res = await axios.get(endpoint);
-            setMovies(res.data.results);
+
+            const fetchedMovies = res.data.results;
+
+            
+            if (fetchedMovies.length === 0) {
+                setNoResults(true);
+            }
+
+            setMovies(prev =>
+                page === 1 ? fetchedMovies : [...prev, ...fetchedMovies]
+            );
+
         } catch (err) {
             console.error("Error fetching movies:", err);
         } finally {
-            setLoading(false); // stop loading
+            setLoading(false);
         }
     };
+
 
 
     const handleSearch = (e) => {
@@ -32,7 +46,28 @@ const Userdb = () => {
             setPage(1);
             fetchMovies();
         }
+        // alert("Dffvd")
     };
+
+    useEffect(() => {
+        if (query === "") {
+            setPage(1); // Reset to page 1
+            fetchMovies();
+        }
+    }, [query]);
+
+    //     useEffect(() => {
+    //     const delay = setTimeout(() => {
+    //         if (query === "") {
+    //             setPage(1);
+    //             fetchMovies();
+    //         }
+    //     }, 300); // 300ms delay
+
+    //     return () => clearTimeout(delay);
+    // }, [query]);
+
+
 
     const openTrailerModal = async (movie) => {
         try {
@@ -65,12 +100,14 @@ const Userdb = () => {
 
     return (
         // <div className="container-fluid bg-dark text-white min-vh-100 py-4">
-            <div
+        <div
             className="container-fluid text-white min-vh-100 py-4"
             style={{
                 background: "linear-gradient(to right, #4c575d, #6e6651)" // You can change the colors
             }}
         >
+
+
             <div className="d-flex justify-content-center mb-4">
                 <div className="input-group" style={{ maxWidth: "500px" }}>
                     <input
@@ -111,12 +148,25 @@ const Userdb = () => {
                         <div key={movie.id} className="col">
                             <div className="card bg-black text-white h-100 shadow-sm border border-secondary">
                                 <div className="position-relative overflow-hidden">
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                        className="card-img-top object-fit-cover"
-                                        style={{ height: "250px", objectFit: "cover" }}
-                                        alt={movie.title}
-                                    />
+                                    {movie.poster_path ? (
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                            className="card-img-top object-fit-cover"
+                                            style={{ height: "250px", objectFit: "cover" }}
+                                            alt={movie.title}
+                                        />
+                                    ) : (
+                                        <div
+                                            className="card-img-top d-flex align-items-center justify-content-center bg-secondary text-warning "
+                                            style={{ height: "250px" }}
+                                        >
+                                            Image Not Available
+                                        </div>
+                                    )}
+
+
+                                 
+
                                     <div className="overlay d-flex justify-content-center align-items-center position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition">
                                         <button
                                             className="btn btn-light rounded-circle"
@@ -149,22 +199,30 @@ const Userdb = () => {
                 </div>
             )}
             {/* Pagination */}
-            <div className="d-flex justify-content-between align-items-center mt-5 px-3">
-                <button
-                    className="btn btn-outline-light"
-                    onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                    disabled={page === 1}
-                >
-                    <i className="fas fa-chevron-left me-1"></i> Previous
-                </button>
-                <span className="fs-5">Page {page}</span>
-                <button
-                    className="btn btn-outline-light"
-                    onClick={() => setPage((p) => p + 1)}
-                >
-                    Next <i className="fas fa-chevron-right ms-1"></i>
-                </button>
-            </div>
+            {noResults && (
+                <div className="text-center text-danger my-4">
+                    No movies found for "{query}"
+                </div>
+            )}
+            {!noResults && (
+                <div className="d-flex justify-content-between align-items-center mt-5 px-3">
+                    <button
+                        className="btn btn-outline-light"
+                        onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                        disabled={page === 1}
+                    >
+                        <i className="fas fa-chevron-left me-1"></i> Previous
+                    </button>
+                    <span className="fs-5">Page {page}</span>
+                    <button
+                        className="btn btn-outline-light"
+                        onClick={() => setPage((p) => p + 1)}
+                    >
+                        Next <i className="fas fa-chevron-right ms-1"></i>
+                    </button>
+                </div>
+            )}
+
 
             {/* Modal */}
             {selectedMovie && (
@@ -198,7 +256,9 @@ const Userdb = () => {
                             </div>
                         </div>
                     </div>
+
                 </div>
+
             )}
         </div>
     );
