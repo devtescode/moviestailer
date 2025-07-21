@@ -64,8 +64,13 @@ const Userdb = () => {
     }, [page]);
 
     return (
-        <div className="container-fluid bg-dark text-white min-vh-100 py-4">
-            {/* Search Bar */}
+        // <div className="container-fluid bg-dark text-white min-vh-100 py-4">
+            <div
+            className="container-fluid text-white min-vh-100 py-4"
+            style={{
+                background: "linear-gradient(to right, #4c575d, #6e6651)" // You can change the colors
+            }}
+        >
             <div className="d-flex justify-content-center mb-4">
                 <div className="input-group" style={{ maxWidth: "500px" }}>
                     <input

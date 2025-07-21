@@ -36,9 +36,15 @@ const MovieDetail = () => {
     </div>;
 
     return (
-        <div className="container-fluid bg-dark text-white min-vh-100 py-4">
-            <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
-                ← Back
+        <div
+            className="container-fluid text-white min-vh-100 py-4"
+            style={{
+                background: "linear-gradient(to right, #4c575d, #6e6651)" // You can change the colors
+            }}
+        >
+
+            <button className="btn btn mb-3 text-white" style={{ backgroundColor: "#6e6651" }} onClick={() => navigate(-1)}>
+                <i class="ri-arrow-left-line"></i> Back
             </button>
 
             <div className="row py-4 bg-white col-md-9 px-3 mx-auto">
@@ -54,13 +60,16 @@ const MovieDetail = () => {
 
                 {/* Details - full width on small, 9 columns on md+ */}
                 <div className="col-12 col-md-9 bg-dark text-white rounded p-4 mt-2 mt-sm-0">
-                    <h2 className="fw-bold text-center text-md-start">{movie.title}</h2>
+                    <p><strong>Title: </strong> {movie.title}</p>
                     <p><strong>Release Date:</strong> {movie.release_date}</p>
                     <p><strong>Rating:</strong> {movie.vote_average} / 10</p>
                     <p><strong>Runtime:</strong> {movie.runtime} mins</p>
                     <p><strong>Genres:</strong> {movie.genres.map(g => g.name).join(", ")}</p>
                     <hr />
-                    <p>{movie.overview}</p>
+                    <div className="bg-white text-dark p-1 rounded-2">
+                        <strong>Overview</strong>
+                        <p>{movie.overview}</p>
+                    </div>
                 </div>
             </div>
         </div>
