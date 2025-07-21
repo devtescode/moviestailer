@@ -14,9 +14,6 @@ const MovieDetail = () => {
                     `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
                 );
                 setMovie(res.data);
-                // console.log(res, "get movies response");
-
-
             } catch (error) {
                 console.error("Error fetching movie details:", error);
             }
