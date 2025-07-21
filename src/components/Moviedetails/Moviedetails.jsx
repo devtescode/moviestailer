@@ -43,7 +43,7 @@ const MovieDetail = () => {
             }}
         >
 
-            <button className="btn btn mb-3 text-white" style={{ backgroundColor: "#6e6651" }} onClick={() => navigate(-1)}>
+            <button className="btn btn mb-3 text-white d-flex align-item-center" style={{ backgroundColor: "#6e6651" }} onClick={() => navigate(-1)}>
                 <i class="ri-arrow-left-line"></i> Back
             </button>
 
