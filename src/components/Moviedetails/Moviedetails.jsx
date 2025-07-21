@@ -6,7 +6,7 @@ const MovieDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
-    
+
     useEffect(() => {
         const fetchMovieDetail = async () => {
             try {
@@ -15,18 +15,25 @@ const MovieDetail = () => {
                 );
                 setMovie(res.data);
                 console.log(res, "get movies response");
-                
-                
+
+
             } catch (error) {
                 console.error("Error fetching movie details:", error);
             }
         };
-        
+
         fetchMovieDetail();
     }, [id]);
     // console.log(import.meta.env.VITE_TMDB_API_KEY, "APikey"); // Should NOT be undefined
 
-    if (!movie) return <div className="text-center p-5">Loading...</div>;
+    if (!movie) return <div className="p-5 min-vh-100 d-flex justify-content-center align-items-center bg-dark text-white position-fixed top-0 start-0 w-100 vh-100 z-3">
+        <div className="text-center">
+            <div className="spinner-border text-light" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-3">Loading...</p>
+        </div>
+    </div>;
 
     return (
         <div className="container-fluid bg-dark text-white min-vh-100 py-4">
