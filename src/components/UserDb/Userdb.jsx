@@ -11,30 +11,30 @@ const Userdb = () => {
     const [loading, setLoading] = useState(false);
     const [noResults, setNoResults] = useState("");
 
-   const fetchMovies = async () => {
-    setLoading(true);
-    setNoResults(false); // reset before new fetch
-    try {
-        const endpoint = query
-            ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
-            : `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
+    const fetchMovies = async () => {
+        setLoading(true);
+        setNoResults(false); // reset before new fetch
+        try {
+            const endpoint = query
+                ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+                : `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
 
-        const res = await axios.get(endpoint);
-        const fetchedMovies = res.data.results;
+            const res = await axios.get(endpoint);
+            const fetchedMovies = res.data.results;
 
-        if (fetchedMovies.length === 0) {
-            setNoResults(true);
+            if (fetchedMovies.length === 0) {
+                setNoResults(true);
+            }
+
+            // ✅ Always replace, don't append
+            setMovies(fetchedMovies);
+
+        } catch (err) {
+            console.error("Error fetching movies:", err);
+        } finally {
+            setLoading(false);
         }
-
-        // ✅ Always replace, don't append
-        setMovies(fetchedMovies);
-
-    } catch (err) {
-        console.error("Error fetching movies:", err);
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
 
 
@@ -125,8 +125,6 @@ const Userdb = () => {
                     </button>
                 </div>
             </div>
-
-
 
             {/* Movie Grid */}
             {loading ? (
@@ -242,7 +240,7 @@ const Userdb = () => {
                                     onClick={closeModal}
                                 ></button>
                             </div>
-                           
+
                             <div className="modal-body">
                                 <div className="d-md-none" style={{ height: "300px" }}>
                                     <iframe
