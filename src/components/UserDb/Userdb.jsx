@@ -11,33 +11,31 @@ const Userdb = () => {
     const [loading, setLoading] = useState(false);
     const [noResults, setNoResults] = useState("");
 
-    const fetchMovies = async () => {
-        setLoading(true);
-        setNoResults(false); // reset before new fetch
-        try {
-            const endpoint = query
-                ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
-                : `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
+   const fetchMovies = async () => {
+    setLoading(true);
+    setNoResults(false); // reset before new fetch
+    try {
+        const endpoint = query
+            ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+            : `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
 
-            const res = await axios.get(endpoint);
+        const res = await axios.get(endpoint);
+        const fetchedMovies = res.data.results;
 
-            const fetchedMovies = res.data.results;
-
-
-            if (fetchedMovies.length === 0) {
-                setNoResults(true);
-            }
-
-            setMovies(prev =>
-                page === 1 ? fetchedMovies : [...prev, ...fetchedMovies]
-            );
-
-        } catch (err) {
-            console.error("Error fetching movies:", err);
-        } finally {
-            setLoading(false);
+        if (fetchedMovies.length === 0) {
+            setNoResults(true);
         }
-    };
+
+        // ✅ Always replace, don't append
+        setMovies(fetchedMovies);
+
+    } catch (err) {
+        console.error("Error fetching movies:", err);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
 
 
@@ -198,7 +196,6 @@ const Userdb = () => {
                     ))}
                 </div>
             )}
-            {/* Pagination */}
             {noResults && (
                 <div className="text-center text-danger my-4">
                     No movies found for "{query}"
@@ -245,17 +242,8 @@ const Userdb = () => {
                                     onClick={closeModal}
                                 ></button>
                             </div>
-                            {/* <div className="modal-body">
-                                <div className="ratio ratio-16x9">
-                                    <iframe
-                                        src={trailerUrl}
-                                        title="Trailer"
-                                        allowFullScreen
-                                    ></iframe>
-                                </div>
-                            </div> */}
+                           
                             <div className="modal-body">
-                                {/* For small screens */}
                                 <div className="d-md-none" style={{ height: "300px" }}>
                                     <iframe
                                         src={trailerUrl}
@@ -265,7 +253,6 @@ const Userdb = () => {
                                     ></iframe>
                                 </div>
 
-                                {/* For medium and larger screens */}
                                 <div className="d-none d-md-block ratio ratio-16x9">
                                     <iframe
                                         src={trailerUrl}
