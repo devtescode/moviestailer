@@ -13,7 +13,7 @@ const Userdb = () => {
 
     const fetchMovies = async () => {
         setLoading(true);
-        setNoResults(false); // reset before new fetch
+        setNoResults(false);
         try {
             const endpoint = query
                 ? `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
@@ -21,12 +21,11 @@ const Userdb = () => {
 
             const res = await axios.get(endpoint);
             const fetchedMovies = res.data.results;
+            console.log("get the details", fetchedMovies.length === 0);
 
             if (fetchedMovies.length === 0) {
                 setNoResults(true);
             }
-
-            // ✅ Always replace, don't append
             setMovies(fetchedMovies);
 
         } catch (err) {
@@ -34,6 +33,21 @@ const Userdb = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    // New handler for Search button click
+    const handleSearchButtonClick = () => {
+        if (!query.trim()) {
+            // alert("Please enter a movie name to search.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please enter a movie name to search.",
+            });
+            return;
+        }
+        setPage(1);
+        fetchMovies();
     };
 
 
@@ -44,7 +58,6 @@ const Userdb = () => {
             setPage(1);
             fetchMovies();
         }
-        // alert("Dffvd")
     };
 
     useEffect(() => {
@@ -119,7 +132,7 @@ const Userdb = () => {
                     <button
                         className="btn btn-danger"
                         type="button"
-                        onClick={fetchMovies}
+                        onClick={handleSearchButtonClick}
                     >
                         <i className="fas fa-search me-1"></i>Search
                     </button>
@@ -259,10 +272,8 @@ const Userdb = () => {
                                     ></iframe>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
 
             )}
