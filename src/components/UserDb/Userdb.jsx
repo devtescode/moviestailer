@@ -38,7 +38,6 @@ const Userdb = () => {
     // New handler for Search button click
     const handleSearchButtonClick = () => {
         if (!query.trim()) {
-            // alert("Please enter a movie name to search.");
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
