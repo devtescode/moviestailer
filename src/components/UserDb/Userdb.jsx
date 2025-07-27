@@ -21,8 +21,6 @@ const Userdb = () => {
 
             const res = await axios.get(endpoint);
             const fetchedMovies = res.data.results;
-            console.log("get the details", fetchedMovies.length === 0);
-
             if (fetchedMovies.length === 0) {
                 setNoResults(true);
             }
@@ -135,7 +133,6 @@ const Userdb = () => {
                     </button>
                 </div>
             </div>
-
             {/* Movie Grid */}
             {loading ? (
                 <div className="d-flex justify-content-center align-items-center bg-dark text-white position-fixed top-0 start-0 w-100 vh-100 z-3">
@@ -242,7 +239,7 @@ const Userdb = () => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="modal-content bg-dark text-white border-secondary">
-                            <div className="modal-header border-0">
+                            <div className="modal-header border-0 text-danger">
                                 <h5 className="modal-title">{selectedMovie.title}</h5>
                                 <button
                                     type="button"
