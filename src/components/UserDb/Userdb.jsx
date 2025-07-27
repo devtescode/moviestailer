@@ -50,8 +50,6 @@ const Userdb = () => {
     };
 
 
-
-
     const handleSearch = (e) => {
         if (e.key === "Enter") {
             setPage(1);
@@ -245,7 +243,7 @@ const Userdb = () => {
                     >
                         <div className="modal-content bg-dark text-white border-secondary">
                             <div className="modal-header border-0">
-                                <h5 className="modal-title">{selectedMovie.title} Trailer</h5>
+                                <h5 className="modal-title">{selectedMovie.title}</h5>
                                 <button
                                     type="button"
                                     className="btn-close btn-close-white"
